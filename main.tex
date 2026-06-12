@@ -1,0 +1,236 @@
+%------------------------------------ Inicio ---------------------------------------
+\documentclass[11pt, a4paper]{article}
+
+% -------------- Nombre del documento --------------
+\newcommand{\nombre}{Trabajo Final Integrador}
+%---------------------------------------------------------
+
+%-------------------- Include Paquetes iniciales---------------------
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{float} 
+\usepackage{geometry}
+\geometry{top=30mm,bottom=30mm,left=33mm,right=33mm,headsep=15mm}
+\usepackage{relsize} % agranda a un mas las letras
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{lastpage} % nos dice el numero total de paginas
+\usepackage{fancyhdr} % modifica encabezado y pie de pagina
+\usepackage{siunitx} % para \si y \SI
+\usepackage{pdfpages} % Para adjuntar datasheets
+\usepackage[hidelinks]{hyperref} % Para que funcionen los links \url{} en la bibliografía
+\usepackage{booktabs}
+% --- NUEVA TIPOGRAFÍA RECOMENDADA: Palatino ---
+%\usepackage{mathpazo} 
+%\usepackage{mathptmx}
+\usepackage{lmodern}
+% Si prefieres Times, comenta la línea de arriba y usa: \usepackage{mathptmx}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{makecell}
+\usepackage{enumitem}
+\usepackage{svg}
+% ----------------------------------------------
+
+% Estilos de página
+\pagestyle{fancy} 
+\renewcommand{\headrulewidth}{0.1pt} 
+\renewcommand{\footrulewidth}{0pt} 
+
+% Para tablas formato:
+\usepackage[table]{xcolor} 
+\renewcommand{\arraystretch}{1.4} % espaciado vertical
+
+\setlength{\headheight}{25.61053pt}
+\cfoot{}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+\lhead{\includegraphics[scale=0.11]{Imagenes/logoPrincipal.jpg}}
+\rhead{\nombre}
+
+%Python
+\usepackage{listings}
+% \usepackage{xcolor}
+
+% Definición de colores para el código
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+% Estilo para el código Python
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize, % Fuente tipo máquina de escribir
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python
+}
+
+\lstset{style=mystyle}
+
+% Bibliografia
+\usepackage[style=apa]{biblatex}
+\usepackage{csquotes}
+\addbibresource{bibliografia.bib}
+
+%-----------------------------------------------------------------------
+
+\begin{document}
+
+%--------------------  Portada ---------------------
+\begin{center}
+	\vspace*{10mm}
+	\textscale{2}{ \textbf{\nombre}} \\
+	\vspace{6mm}
+	\textscale{1.6}{ Electrónica Industrial }\\
+	\vspace{4mm}
+	\textscale{1.3}{2026}\\
+    ---------------------------
+
+    \textbf{\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\linewidth]{Imagenes/unc_logo_solo.png}
+	\end{figure}}
+    
+    \vspace*{8mm}
+    {\Large \textbf{Autores}} \\
+    \vspace{4mm}
+
+    \renewcommand{\arraystretch}{2}
+    \begin{tabular}{lll}
+        Cabero, Mauro Ezequiel & 43761887 \\
+        Testa, Lisandro  & 43761887 \\
+        Zúñiga, Guillermo Rubén Darío  & 44229491 \\
+    \end{tabular}
+
+    \vspace{15mm}
+
+    {\Large \textbf{Docentes}} \\
+    \vspace{8mm}
+
+    \begin{minipage}{0.5\linewidth}
+        \centering
+        Ing. Esp. Adrián Agüero
+    \end{minipage}
+
+    \vfill 
+    \thispagestyle{empty}
+\end{center} % <--- AQUÍ SE CIERRA EL ÚNICO ENTORNO CENTER DE LA PORTADA
+\clearpage
+
+
+
+% ------------------------------------- Desarrollo ---------------------------------
+\pagenumbering{arabic}
+
+\section{Introducción}
+
+La demanda de convertidores CC-CC crece día a día debido a sus numerosas aplicaciones en fuentes de energía renovables (RES). Entre ellos, los convertidores de doble puente activo (DAB) están atrayendo la atención por sus amplias características, como el aislamiento galvánico, la bidireccionalidad, la alta ganancia de voltaje, el modo de funcionamiento elevador-reductor y la alta eficiencia gracias a su capacidad de operar en modo de conmutación de voltaje cero (ZVS) (\cite{navamani}).
+
+En este trabajo final integrador se propuso señalar los conceptos fundamentales del DAB y sus formas de onda, para luego seleccionar todos los componentes necesarios según las siguientes especificaciones:
+
+\begin{itemize}
+    \item \textbf{Tensión de entrada}: 48\,V.
+    \item \textbf{Tensión de salida}: 400\,V.
+    \item \textbf{Rango de corriente}: 0 a 40\,A.
+\end{itemize}
+
+\noindent
+para luego simular el circuito y comparar el resultado obtenido con la expectativa teórica.
+
+\section{Objetivos}
+
+El objetivo general del trabajo fue diseñar e implementar un convertidor DC-DC de tipo bidireccional, mas especificamente, estudiar su principio de funcionamiento, obtener los parámetros de selección según la topología, desarrollar el control con un driver para la misma y comparar los datos obtenidos de las simulaciones con los datos calculados.
+
+\section{Marco Teórico}
+
+El convertidor de doble puente activo (DAB) tiene la topología de la figura \ref{fig:circuito}. Está compuesto por una etapa inversora y otra rectificadora, con ambas etapas consistiendo de un puente H que puede ser comúnmente de mosfets o IGBT, y con un transformador de alta frecuencia enmedio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos.
+
+
+
+\begin{figure}[H]
+    \centering
+    \includesvg[width=0.8\linewidth]{Imagenes/circuito}
+    \caption{cap (\cite{kulkarni}).}
+    \label{fig:circuito}
+\end{figure}
+
+\section{Selección de Componentes}
+
+\section{Desarrollo del Driver}
+
+\section{Resultados en Simulación}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/circuito_sim.png}
+    \caption{cap}
+    \label{fig:circuito_sim}
+\end{figure}
+
+\section{Conclusión}
+
+
+
+%\newpage
+%\begin{thebibliography}{9}
+
+%\bibitem{manual_g110_es}
+%Siemens AG. ``Convertidor de frecuencia compacto SINAMICS G110 - Instrucciones de servicio (Resumen).'' Edición 04/2004. \\
+%\url{https://cache.industry.siemens.com/dl/files/608/18947608/att_66221/v1/G110_COM_18947608__sp_0404.pdf}
+
+%\end{thebibliography}
+\nocite{*}
+\printbibliography[title={Bibliografía}]
+
+\end{document}
+% ------------------------------------- Desarrollo ---------------------------------
+
+% COMANDOS UTILES
+
+\begin{table}[H]
+\centering
+\caption{Parámetros fundamentales del SINAMICS G110 para puesta en servicio rápida.}
+\resizebox{0.85\textwidth}{!}{%
+\begin{tabular}{@{} lcc @{}}
+\toprule
+\textbf{Parámetro} & \textbf{Nombre / Descripción} & \textbf{Nivel de acceso} \\
+\midrule
+P0100 & Selección de región geográfica (Frecuencia de red: 50 Hz o 60 Hz) & 1 \\
+P0304 & Tensión nominal del motor [V] de la placa de características & 1 \\
+P0305 & Corriente nominal del motor [A] de la placa de características & 1 \\
+P0307 & Potencia nominal del motor [kW / hp] de la placa de características & 1 \\
+P0308 & Factor de potencia ($\cos\varphi$) nominal del motor de placa & 3 \\
+P0309 & Rendimiento nominal del motor [\%] de la placa de características & 3 \\
+P0310 & Frecuencia nominal del motor [Hz] de la placa de características & 1 \\
+P0311 & Velocidad nominal del motor [rpm] de la placa de características & 1 \\
+P0335 & Tipo de refrigeración del motor (Autoventilado o Ventilación forzada) & 3 \\
+P0640 & Factor de sobrecarga del motor [\%] respecto a la nominal P0305 & 3 \\
+P0700 & Selección de fuente de órdenes (0: Fábrica, 1: BOP, 2: Terminales, 5: USS) & 1 \\
+P1000 & Selección de consigna de frecuencia (1: MOP, 2: Analógica, 3: Fija, 5: USS) & 1 \\
+P1080 & Frecuencia mínima del motor [Hz] a la cual funcionará & 1 \\
+P1082 & Frecuencia máxima del motor [Hz] límite de operación & 1 \\
+P1120 & Tiempo de aceleración [s] desde parado hasta frecuencia máxima & 1 \\
+P1121 & Tiempo de deceleración [s] desde frecuencia máxima hasta parado & 1 \\
+P1135 & Tiempo de deceleración ante parada de emergencia OFF3 [s] & 3 \\
+P1300 & Modo de control (0: V/f lineal, 2: V/f cuadrático, 3: V/f programable) & 2 \\
+P3900 & Fin de puesta en servicio (0: Sin cálculo, 1: Con cálculo de motor y reseteo) & 1 \\
+\bottomrule
+\end{tabular}
+}
+\label{tab:lista-parametros-g110}
+\end{table}
