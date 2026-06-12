@@ -15,6 +15,7 @@
         "*.toc",
         "*.fls",
         "*.log",
+        ".bbl",
         "*.fdb_latexmk",
         "*.run.xml",
         "*-blx.bib"
