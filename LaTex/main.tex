@@ -18,7 +18,7 @@
 \usepackage{fancyhdr} % modifica encabezado y pie de pagina
 \usepackage{siunitx} % para \si y \SI
 \usepackage{pdfpages} % Para adjuntar datasheets
-\usepackage[hidelinks]{hyperref} % Para que funcionen los links \url{} en la bibliografía
+%\usepackage[hidelinks]{hyperref} % moved later to avoid LaTeX hooks conflicts
 \usepackage{booktabs}
 % --- NUEVA TIPOGRAFÍA RECOMENDADA: Palatino ---
 %\usepackage{mathpazo} 
@@ -88,6 +88,11 @@
 \addbibresource{bibliografia.bib}
 
 %-----------------------------------------------------------------------
+% Ensure proper caption handling to avoid LaTeX hooks error with hyperref
+\usepackage{caption}
+
+% Load hyperref last to avoid LaTeX hooks conflicts
+\usepackage[hidelinks]{hyperref} % Para que funcionen los links \url{} en la bibliografía
 
 \begin{document}
 
