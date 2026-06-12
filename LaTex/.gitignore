@@ -14,6 +14,10 @@
 *.out
 *.synctex.gz
 *.toc
+svg-inkscape
+
+# PDF del informe
+main.pdf
 
 # Carpetas de extensiones
 .vscode/*
