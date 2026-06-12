@@ -26,6 +26,9 @@
         {
             "name": "latexmk 🔃",
             "tools": [
+                "latexmk",
+                "biber",
+                "latexmk",
                 "latexmk"
             ]
         }
