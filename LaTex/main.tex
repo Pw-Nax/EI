@@ -182,15 +182,38 @@ Diseñar y simular un convertidor DC-DC bidireccional basado en la topología \t
 
 \section{Marco Teórico}
 
-El convertidor de doble puente activo (DAB) tiene la topología de la figura \ref{fig:circuito}. Está compuesto por una etapa inversora y otra rectificadora, con ambas etapas consistiendo de un puente H que puede ser comúnmente de mosfets o IGBT, y con un transformador de alta frecuencia enmedio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos.
-
-
+El convertidor de \emph{doble puente activo} (DAB) tiene la topología de la figura \ref{fig:circuito}. Está compuesto por una etapa inversora y otra rectificadora, con ambas etapas consistiendo de un puente H que puede ser comúnmente de mosfets o IGBT, y con un transformador de alta frecuencia en medio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos.
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.8\linewidth]{Imagenes/circuito.png}
-    \caption{Diagrama del convertidor de doble puente activo (DAB).}
+    \includegraphics[width=0.9\linewidth]{Imagenes/circuito.png}
+    \caption{Topología y etapas del doble puente activo (DAB).}
     \label{fig:circuito}
+\end{figure}
+
+Los dos puentes son controlados de tal forma que generen una onda cuadrada de tensión en ambos lados del transformador, pero el principio de funcionamiento se basa en el desfasaje entre las dos ondas. La diferencia entre estas dos tensiones cae en la inductancia propia de los devanados del transformador, resultando en una corriente que circula en ambos puentes y produce la transferencia de potencia. Esta inductancia se modela como un inductor en serie con el transformador y en la implementación también suele ser complementada con otro inductor para obtener la potencia máxima requerida.
+
+Los métodos utilizados para controlar la conmutación se denominan \emph{modulaciones}, y existen varias en la práctica. La más sencilla es la modulación \emph{SPS} (Desplazamiento de Fase Único) y es la que se utilizó para realizar el diseño que se explica más adelante. 
+
+Las formas de onda se muestran en la figura \ref{fig:graf_dab_teo}. Los dos puentes conmutan con un duty cycle del 50\% pero desfasados un ángulo $\phi$. Esto genera una corriente sobre la inductancia que es posible calcular mediante la ley de Faraday-Lenz. La corriente promedio en la etapa de salida es
+
+\begin{equation}
+    I_o = \frac{V_i}{2 n L f_s}\, D(1-D) \qquad
+    D = \frac{\phi}{\pi}
+\end{equation}
+
+\noindent
+donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$ es la frecuencia de conmutación y $D$ es el duty cycle. A partir de esto, se obtiene la potencia transmitida como
+
+\begin{equation}
+    P_o = \frac{V_i V_o}{2 n L f_s}\, D(1-D)
+\end{equation}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\linewidth]{Imagenes/graf_dab_teo.png}
+    \caption{Formas de onda teóricas en el DAB.}
+    \label{fig:graf_dab_teo}
 \end{figure}
 
 \section{Diseño del Convertidor}
