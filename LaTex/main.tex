@@ -199,14 +199,27 @@ Las formas de onda que se producen con la modulación SPS se muestran en la figu
 
 \begin{equation}
     I_o = \frac{V_i}{2 n L f_s}\, D(1-D) \qquad
-    D = \frac{\phi}{\pi}
 \end{equation}
 
 \noindent
-donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$ es la frecuencia de conmutación y $D$ es el duty cycle. A partir de esto, se obtiene la potencia transmitida como
+donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$ es la frecuencia de conmutación y $D$ es el duty cycle, que se define como
+
+\[
+    D = \frac{\phi}{\pi} \qquad
+    0 \leq \phi \leq \pi
+\]
+
+A partir de esto, se obtiene la potencia transmitida como
 
 \begin{equation}
     P_o = I_o V_o = \frac{V_i V_o}{2 n L f_s}\, D(1-D)
+\end{equation}
+
+\noindent
+y cuando $D=1$, se obtiene la potencia máxima que el convertidor puede transferir:
+
+\begin{equation}
+    P_{o_{max}} = \frac{V_i V_o}{8 n L f_s}
 \end{equation}
 
 \begin{figure}[H]
@@ -215,6 +228,8 @@ donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$
     \caption{Formas de onda teóricas en el DAB.}
     \label{fig:graf_dab_teo}
 \end{figure}
+
+Idealmente, $V_i=V_p$ y $V_o=V_s$, pero en la práctica puede ocurrir que sean distintos, debido al efecto de los capacitores en paralelo y la inductancia en serie. En este informe se consideró el estudio del caso ideal.
 
 \section{Diseño del Convertidor}
 
