@@ -281,6 +281,8 @@ La corriente eficaz en el MOSFET del puente primario es:
     I_{MOS\_rms} = \sqrt{\frac{7}{24}} \cdot 166.67\text{ A} = \SI{90.01}{\ampere}
 \end{equation}
 
+Mosfet seleccionado = \textbf 90.01 . 1.3 = \textbf{117.01 A} = \textbf{120 A} (valor comercial)
+
 Para el puente asociado al secundario (lado de alta tensión), las corrientes calculadas se refieren utilizando la relación de transformación $n = 8.333$. La corriente pico máxima a soportar es:
 \begin{equation}
     I_{p\_sec} = \frac{I_p}{n} = \frac{166.67\text{ A}}{8.333} = \SI{20.00}{\ampere}
@@ -290,6 +292,8 @@ La corriente eficaz en el canal del MOSFET del secundario es:
 \begin{equation}
     I_{MOS\_rms\_sec} = \frac{I_{MOS\_rms}}{n} = \frac{90.01\text{ A}}{8.333} = \SI{10.80}{\ampere}
 \end{equation}
+
+Mosfet seleccionado = \textbf 10.80 . 1.3 = \textbf{14.04 A} = \textbf{15 A} (valor comercial)
 
  \subsection{Cálculos para la Potencia Disipada (Diseño Térmico)}
  
