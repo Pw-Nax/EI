@@ -174,22 +174,125 @@ El convertidor de doble puente activo (DAB) tiene la topología de la figura \re
     \label{fig:circuito}
 \end{figure}
 
-\section{Selección de Componentes}
+\section{Diseño del Convertidor}
+
+\subsection{Cálculos para la Selección de Componentes}
+
+Se optó por dividir el diseño en módulos de 10 A para lograr los 40 A requeridos en la salida del convertidor. El cálculo presentado a continuación corresponde a los parámetros de un único módulo.
+
+El convertidor debe ser capaz de suministrar una potencia máxima ($P_o$), la cual se calcula como:
+\begin{equation}    
+    P_o = V_o \cdot I_{out\_max} = 400\text{ V} \cdot 10\text{ A} = \SI{4000}{\watt} = \SI{4}{\kilo\watt}
+\end{equation}
+
+La relación de vueltas del transformador ($n$) para el acople óptimo de tensiones será igual a:
+\begin{equation}
+    n = \frac{V_o}{V_g} = \frac{400}{48} = 8.333
+\end{equation}
+
+Se fija el valor de la frecuencia de conmutación en:
+\begin{equation}
+    f_s = \SI{40}{\kilo\hertz}
+\end{equation}
+Por lo que el período resulta:
+\begin{equation}
+    T_s = \frac{1}{f_s} = \frac{1}{40000\text{ Hz}} = \SI{25}{\micro\second}
+\end{equation}
+
+Para un ciclo de trabajo de $D = 0.5$ se tiene la máxima transferencia de potencia. A partir de esto, puede despejarse la inductancia serie necesaria referida al primario:
+\begin{equation}
+    L = \frac{V_g V_o D(1-D)}{2 n P_o f_s}
+\end{equation}
+\begin{equation}
+    L = \frac{48\text{ V} \cdot 400\text{ V} \cdot 0.5 \cdot (1-0.5)}{2 \cdot 8.333 \cdot 4000\text{ W} \cdot 40000\text{ Hz}} = \SI{1.8}{\micro\henry}
+\end{equation}
+
+El valor máximo (pico) de la corriente en el puente asociado al primario, que define el límite de saturación magnética, es:
+\begin{equation}
+    I_p = \frac{T_s}{2L}(V_g D)
+\end{equation}
+\begin{equation}
+    I_p = \frac{\SI{25}{\micro\second}}{2\cdot\SI{1.8}{\micro\henry}}\left(\SI{48}{\volt}\cdot 0.5\right) = \SI{166.67}{\ampere}
+\end{equation}
+
+%Para determinar la corriente de la inductancia, primero se define la corriente eficaz total por llave (transistor + diodo):
+%\begin{equation}
+%    I_{llave\_rms} = \sqrt{I_{MOS\_rms}^2 + I_{F\_rms}^2} = \SI{96.22}{\ampere}
+%\end{equation}
+%
+%Finalmente, la corriente eficaz que circula por la inductancia de dispersión es:
+%\begin{equation}
+%    I_{L\_rms} = \sqrt{\frac{2}{3}} I_p
+%\end{equation}
+%\begin{equation}
+%    I_{L\_rms} = \sqrt{\frac{2}{3}} \cdot 166.67\text{ A} = \SI{136.08}{\ampere}
+%\end{equation}
 
 
+\subsection{Cálculos para la Selección de MOSFETs}
 
+La corriente eficaz en el MOSFET del puente primario es:
+\begin{equation}
+    I_{MOS\_rms} = \sqrt{\frac{7}{24}} I_p
+\end{equation}
+\begin{equation}
+    I_{MOS\_rms} = \sqrt{\frac{7}{24}} \cdot 166.67\text{ A} = \SI{90.01}{\ampere}
+\end{equation}
+
+Para el puente asociado al secundario (lado de alta tensión), las corrientes calculadas se refieren utilizando la relación de transformación $n = 8.333$. La corriente pico máxima a soportar es:
+\begin{equation}
+    I_{p\_sec} = \frac{I_p}{n} = \frac{166.67\text{ A}}{8.333} = \SI{20.00}{\ampere}
+\end{equation}
+
+La corriente eficaz en el canal del MOSFET del secundario es:
+\begin{equation}
+    I_{MOS\_rms\_sec} = \frac{I_{MOS\_rms}}{n} = \frac{90.01\text{ A}}{8.333} = \SI{10.80}{\ampere}
+\end{equation}
+
+ \subsection{Cálculos para la Potencia Disipada (Diseño Térmico)}
+ 
+ Para el correcto dimensionamiento del disipador de calor, deben considerarse las pérdidas totales del componente físico, lo cual incluye obligatoriamente la corriente de dirección inversa que circula por el diodo intrínseco en antiparalelo.
+ 
+ Para el puente primario, la corriente eficaz en el diodo es:
+ \begin{equation}
+     I_{F\_rms} = \frac{I_p}{\sqrt{24}}
+ \end{equation}
+ \begin{equation}
+     I_{F\_rms} = \frac{166.67\text{ A}}{\sqrt{24}} = \SI{34.02}{\ampere}
+ \end{equation}
+ 
+ La corriente media en el diodo del primario es:
+ \begin{equation}
+     I_{F\_av} = \frac{I_p}{16}
+ \end{equation}
+ \begin{equation}
+     I_{F\_av} = \frac{166.67\text{ A}}{16} = \SI{10.42}{\ampere}
+ \end{equation}
+ 
+ Refiriendo estos valores al puente secundario para su respectivo análisis térmico:
+ Corriente eficaz en el diodo del secundario:
+ \begin{equation}
+     I_{F\_rms\_sec} = \frac{I_{F\_rms}}{n} = \frac{34.02\text{ A}}{8.333} = \SI{4.08}{\ampere}
+ \end{equation}
+ 
+ Corriente media en el diodo del secundario:
+ \begin{equation}
+     I_{F\_av\_sec} = \frac{I_{F\_av}}{n} = \frac{10.42\text{ A}}{8.333} = \SI{1.25}{\ampere}
+ \end{equation}
+ 
+ 
 \section{Desarrollo del Driver}
 
 
 
 \section{Resultados en Simulación}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1\linewidth]{Imagenes/circuito_sim.png}
-    \caption{cap}
-    \label{fig:circuito_sim}
-\end{figure}
+%\begin{figure}
+%    \centering
+%    \includegraphics[width=1\linewidth]{Imagenes/circuito_sim.png}
+%    \caption{cap}
+%    \label{fig:circuito_sim}
+%\end{figure}
 
 \section{Conclusión}
 
