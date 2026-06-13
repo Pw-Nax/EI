@@ -3,7 +3,7 @@
 
 % -------------- Nombre del documento --------------
 \newcommand{\nombre}{Trabajo Final Integrador}
-%--------------------------------------------------S-------
+%---------------------------------------------------------
 
 %-------------------- Include Paquetes iniciales---------------------
 \usepackage{mathtools}
@@ -98,18 +98,18 @@
 
 %--------------------  Portada ---------------------
 \begin{center}
-	\vspace*{10mm}
-	\textscale{2}{ \textbf{\nombre}} \\
-	\vspace{6mm}
-	\textscale{1.6}{ Electrónica Industrial }\\
-	\vspace{4mm}
-	\textscale{1.3}{2026}\\
+    \vspace*{10mm}
+    \textscale{2}{ \textbf{\nombre}} \\
+    \vspace{6mm}
+    \textscale{1.6}{ Electrónica Industrial }\\
+    \vspace{4mm}
+    \textscale{1.3}{2026}\\
     ---------------------------
 
     \textbf{\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.4\linewidth]{Imagenes/unc_logo_solo.png}
-	\end{figure}}
+        \centering
+        \includegraphics[width=0.4\linewidth]{Imagenes/unc_logo_solo.png}
+    \end{figure}}
     
     \vspace*{8mm}
     {\Large \textbf{Autores}} \\
@@ -118,7 +118,7 @@
     \renewcommand{\arraystretch}{2}
     \begin{tabular}{lll}
         Cabero, Mauro Ezequiel & 43761887 \\
-        Testa, Lisandro  & 43761887 \\
+        Testa, Lisandro  & 43477019 \\
         Zúñiga, Guillermo Rubén Darío  & 44229491 \\
     \end{tabular}
 
@@ -137,29 +137,48 @@
 \end{center} % <--- AQUÍ SE CIERRA EL ÚNICO ENTORNO CENTER DE LA PORTADA
 \clearpage
 
-
+\tableofcontents
+\thispagestyle{empty}
+\clearpage
 
 % ------------------------------------- Desarrollo ---------------------------------
 \pagenumbering{arabic}
 
 \section{Introducción}
 
-La demanda de convertidores CC-CC crece día a día debido a sus numerosas aplicaciones en fuentes de energía renovables (RES). Entre ellos, los convertidores de doble puente activo (DAB) están atrayendo la atención por sus amplias características, como el aislamiento galvánico, la bidireccionalidad, la alta ganancia de voltaje, el modo de funcionamiento elevador-reductor y la alta eficiencia gracias a su capacidad de operar en modo de conmutación de voltaje cero (ZVS) (\cite{navamani}).
+El crecimiento sostenido de las energías renovables y los sistemas de almacenamiento de energía ha impulsado la necesidad de desarrollar convertidores electrónicos de potencia cada vez más eficientes y versátiles. En este contexto, los convertidores DC-DC bidireccionales desempeñan un papel fundamental al permitir la transferencia controlada de energía entre diferentes fuentes y sistemas de almacenamiento, adaptándose a una amplia variedad de aplicaciones industriales, residenciales y de movilidad eléctrica.
 
-En este trabajo final integrador se propuso señalar los conceptos fundamentales del DAB y sus formas de onda, posteriormente seleccionar todos los componentes necesarios según las siguientes especificaciones:
+Entre las distintas topologías disponibles, el convertidor \textit{Dual Active Bridge} (DAB) ha adquirido una relevancia creciente debido a sus características de aislamiento galvánico mediante transformador de alta frecuencia, capacidad de transferencia bidireccional de potencia, amplio rango de adaptación de tensión y elevada densidad de potencia. Estas ventajas lo convierten en una solución ampliamente utilizada en sistemas de almacenamiento energético, cargadores bidireccionales para vehículos eléctricos y aplicaciones vinculadas a redes eléctricas inteligentes.
 
-\begin{itemize}
-    \item \textbf{Tensión de entrada}: 48\,V.
-    \item \textbf{Tensión de salida}: 400\,V.
-    \item \textbf{Rango de corriente}: 0 a 40\,A.
-\end{itemize}
+La topología DAB está compuesta por dos puentes activos completos conectados mediante un transformador de alta frecuencia y una inductancia serie, permitiendo controlar tanto la magnitud como el sentido del flujo de potencia mediante técnicas de modulación por desfase. Gracias a esta característica, es posible operar el convertidor tanto en modo elevador como reductor de tensión, manteniendo el aislamiento eléctrico entre sus puertos de entrada y salida.
 
-\noindent
-Finalmente se simulara el circuito y comparara el resultado obtenido con la expectativa teórica.
+En el presente trabajo se aborda el estudio, diseño y simulación de un convertidor DC-DC bidireccional basado en la topología DAB para una tensión de entrada de \SI{48}{V}, una tensión de salida de \SI{400}{V} y un rango de corriente de hasta \SI{40}{A}. Para ello se analizan los principios de funcionamiento de la topología, se seleccionan los componentes principales del sistema, se desarrolla el circuito de control y disparo de los dispositivos de potencia, y finalmente se verifican los resultados obtenidos mediante simulación comparándolos con los valores teóricos calculados.
 
 \section{Objetivos}
 
-El objetivo general del trabajo fue diseñar e implementar un convertidor DC-DC de tipo bidireccional, mas especificamente, estudiar su principio de funcionamiento, obtener los parámetros de selección según la topología, desarrollar el control con un driver para la misma y comparar los datos obtenidos de las simulaciones con los datos calculados.
+\subsection{Objetivo General}
+
+Diseñar y simular un convertidor DC-DC bidireccional basado en la topología \textit{Dual Active Bridge} (DAB), destinado a la transferencia de energía entre una fuente de corriente continua de \SI{48}{V} y una carga de \SI{400}{V} con un rango de corriente de hasta \SI{40}{A}. El desarrollo contempla el análisis teórico de la topología, el dimensionamiento de los componentes principales del circuito de potencia, el diseño de las etapas de control y disparo de los dispositivos semiconductores, y la validación de su funcionamiento mediante simulaciones eléctricas.
+
+\subsection{Objetivos Específicos}
+
+\begin{enumerate}
+\item Investigar el principio de funcionamiento de los convertidores DC-DC bidireccionales y analizar las características de la topología Dual Active Bridge.
+
+\item Estudiar las estrategias de control utilizadas en convertidores DAB, con énfasis en la modulación por desplazamiento de fase (\textit{Single Phase Shift}).
+
+\item Determinar las especificaciones eléctricas del sistema a partir de los requerimientos de tensión, corriente y potencia establecidos.
+
+\item Dimensionar los elementos principales del circuito de potencia, incluyendo transformador de alta frecuencia, inductancias, capacitores y dispositivos semiconductores.
+
+\item Seleccionar los dispositivos de potencia y los circuitos auxiliares necesarios para garantizar una operación segura y eficiente del convertidor.
+
+\item Desarrollar el circuito de control encargado de generar las señales PWM necesarias para la operación del convertidor.
+
+\item Implementar el modelo completo del convertidor en un entorno de simulación y verificar su funcionamiento.
+
+\item Analizar las formas de onda obtenidas y comparar los resultados de simulación con los valores teóricos calculados.
+\end{enumerate}
 
 \section{Marco Teórico}
 
@@ -283,8 +302,6 @@ La corriente eficaz en el canal del MOSFET del secundario es:
  
 \section{Desarrollo del Driver}
 
-
-
 \section{Resultados en Simulación}
 
 %\begin{figure}
@@ -295,7 +312,6 @@ La corriente eficaz en el canal del MOSFET del secundario es:
 %\end{figure}
 
 \section{Conclusión}
-
 
 
 %\newpage
