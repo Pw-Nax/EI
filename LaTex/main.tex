@@ -316,6 +316,48 @@ Para el puente secundario, las exigencias de corriente se ven reducidas por la r
 \end{itemize}
 
 
+\subsection{Corriente en la inductancia de dispersión}
+
+La corriente eficaz que circula por la inductancia de dispersión ($I_{L\_rms}$) es un parámetro fundamental para el cálculo de pérdidas en el cobre del transformador y para dimensionar el núcleo magnético. De acuerdo con la forma de onda trapezoidal característica del convertidor DAB, la integral de la corriente para un ciclo de trabajo $D=0.5$ se resuelve como:
+
+\begin{equation}
+    I_{L\_rms} = \sqrt{\frac{2}{3}} I_p
+\end{equation}
+
+Sustituyendo el valor de corriente de pico calculado para nuestro módulo ($I_p = \SI{166.67}{\ampere}$):
+
+\begin{equation}
+    I_{L\_rms} = \sqrt{\frac{2}{3}} \cdot 166.67\text{ A} = 0.8165 \cdot 166.67\text{ A} = \SI{136.08}{\ampere}
+\end{equation}
+
+\subsubsection{Verificación de Corrientes en la Llave}
+
+Para validar la consistencia de los cálculos, se realiza la verificación basada en que la corriente total que atraviesa la inductancia es suministrada por las llaves del puente. En cada semiciclo, la corriente eficaz de una llave ($I_{llave\_rms}$) está compuesta por la contribución del MOSFET ($I_{MOS\_rms}$) y de su diodo en antiparalelo ($I_{F\_rms}$):
+
+\begin{equation}
+    I_{llave\_rms} = \sqrt{I_{MOS\_rms}^2 + I_{F\_rms}^2}
+\end{equation}
+
+Utilizando nuestros datos del puente primario:
+\begin{itemize}
+    \item $I_{MOS\_rms} = \SI{90.01}{\ampere}$
+    \item $I_{F\_rms} = \frac{I_p}{\sqrt{24}} = \frac{166.67}{\sqrt{24}} = \SI{34.02}{\ampere}$
+\end{itemize}
+
+Calculamos la corriente eficaz por llave:
+\begin{equation}
+    I_{llave\_rms} = \sqrt{(90.01\text{ A})^2 + (34.02\text{ A})^2} = \sqrt{8101.8 + 1157.4} = \SI{96.22}{\ampere}
+\end{equation}
+
+Dado que la inductancia de dispersión conduce la corriente de dos llaves simultáneamente (una por cada rama activa del puente) y lo hace durante ambos semiciclos, la relación teórica es $I_{L\_rms} = \sqrt{2} \cdot I_{llave\_rms}$. Realizamos la comprobación final:
+
+\begin{equation}
+    I_{L\_rms} = \sqrt{2} \cdot 96.22\text{ A} = \SI{136.08}{\ampere}
+\end{equation}
+
+\textbf{Conclusión:} Los resultados son idénticos, lo que verifica que la distribución de corriente entre los semiconductores (MOSFET y diodo) y la inductancia de dispersión es analíticamente correcta y consistente con el modelo de conducción del DAB.
+
+
 
 \subsection{Selección y Verificación de los Capacitores de Bus}
 
@@ -350,6 +392,35 @@ Para el bus de entrada, se permite un rizado ligeramente superior (objetivo del 
     \item \textbf{Conclusión:} El resultado de \SI{0.882}{\percent} cumple holgadamente con el requerimiento de diseño, situándose muy por debajo del \SI{2}{\percent} máximo permitido.
 \end{itemize}
 
+
+\subsubsection{Cálculo de la Potencia de Diseño del Transformador}
+
+En convertidores de alta frecuencia como el DAB, el transformador debe dimensionarse considerando la potencia aparente ($P_{calc}$), la cual es superior a la potencia de salida nominal debido a los altos valores de corriente eficaz ($RMS$) generados por la forma de onda trapezoidal. Esta potencia se define como el promedio de las potencias aparentes del primario y secundario:
+
+\begin{equation}
+    P_{calc} = \frac{P_{primario} + P_{secundario}}{2}
+\end{equation}
+
+Utilizando los valores de corriente eficaz calculados anteriormente para el régimen de máxima transferencia (\SI{4}{\kilo\watt}):
+
+\begin{itemize}
+    \item \textbf{Potencia aparente del primario:} Basada en el bus de entrada ($V_g = \SI{48}{\volt}$) y la corriente eficaz en la inductancia ($I_{L\_rms} = \SI{136.08}{\ampere}$).
+    \begin{equation}
+        P_{primario} = V_g \cdot I_{L\_rms} = 48\text{ V} \cdot 136.08\text{ A} = \SI{6531.84}{\watt}
+    \end{equation}
+    
+    \item \textbf{Potencia aparente del secundario:} Basada en el bus de salida ($V_o = \SI{400}{\volt}$) y la corriente eficaz referida al secundario ($I_{L\_rms\_sec} = I_{L\_rms}/n = \SI{16.33}{\ampere}$).
+    \begin{equation}
+        P_{secundario} = V_o \cdot I_{L\_rms\_sec} = 400\text{ V} \cdot 16.33\text{ A} = \SI{6532.00}{\watt}
+    \end{equation}
+\end{itemize}
+
+Sustituyendo en la fórmula de potencia de diseño:
+\begin{equation}
+    P_{calc} = \frac{\SI{6531.84}{\watt} + \SI{6532.00}{\watt}}{2} = \SI{6531.92}{\watt} \approx \SI{6.53}{\kilo\watt}
+\end{equation}
+
+\textbf{Nota de diseño:} Aunque la potencia útil entregada a la carga es de \SI{4}{\kilo\watt}, el transformador debe ser dimensionado magnética y térmicamente para soportar una potencia de cálculo de \SI{6.53}{\kilo\watt}. Esta diferencia se debe al factor de forma de la corriente en la topología DAB, donde la corriente eficaz es significativamente mayor a la corriente media.
 
 
 
