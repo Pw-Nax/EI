@@ -182,7 +182,7 @@ Diseñar y simular un convertidor DC-DC bidireccional basado en la topología \t
 
 \section{Marco Teórico}
 
-El convertidor de \emph{doble puente activo} (DAB) tiene la topología de la figura \ref{fig:circuito}. Está compuesto por dos puentes H que pueden ser comúnmente de mosfets o IGBT, conformando una etapa inversora y otra rectificadora, y un transformador de alta frecuencia en medio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos.
+El convertidor DAB tiene la topología de la figura \ref{fig:circuito}. Está compuesto por dos puentes H que pueden ser comúnmente de mosfets o IGBT, conformando una etapa inversora y otra rectificadora, y un transformador de alta frecuencia en medio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos. Cuando se entrega potencia al lado de alta tension, el DAB opera en modo \emph{elevador}, y cuando se entrega al lado de baja tension, opera en modo \emph{reductor}.
 
 \begin{figure}[H]
     \centering
@@ -195,7 +195,9 @@ Los dos puentes son controlados de tal forma que generen una onda cuadrada de te
 
 Los métodos utilizados para controlar la conmutación se denominan \emph{modulaciones} y existen varias en la práctica. La más sencilla es la modulación \emph{SPS} (Desplazamiento de Fase Único) y es la que se utilizó para realizar el diseño que se explica más adelante. 
 
-Las formas de onda que se producen con la modulación SPS se muestran en la figura \ref{fig:graf_dab_teo}. Los dos puentes conmutan con un duty cycle del 50\% pero desfasados un ángulo $\phi$, lo que genera una corriente sobre la inductancia que es posible calcular mediante la ley de Faraday-Lenz. La corriente promedio en la etapa de salida es
+Las formas de onda que se producen con la modulación SPS se muestran en la figura \ref{fig:graf_dab_teo}. Los dos puentes conmutan con un duty cycle del 50\% pero desfasados un ángulo $\phi$, lo que genera una corriente sobre la inductancia que es posible calcular mediante la ley de Faraday-Lenz. En modo elevador, el puente del secundario está atrasado respecto del puente primario, y en modo reductor está adelantado.
+
+Cuando el convertidor opera en modo elevador, en régimen, la corriente promedio en la etapa de salida es
 
 \begin{equation}
     I_o = \frac{V_i}{2 n L f_s}\, D(1-D) \qquad
@@ -205,7 +207,7 @@ Las formas de onda que se producen con la modulación SPS se muestran en la figu
 donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$ es la frecuencia de conmutación y $D$ es el duty cycle, que se define como
 
 \[
-    D = \frac{\phi}{\pi} \qquad
+    D = \frac{\phi}{2\pi} \qquad
     0 \leq \phi \leq \pi
 \]
 
@@ -216,16 +218,18 @@ A partir de esto, se obtiene la potencia transmitida como
 \end{equation}
 
 \noindent
-y cuando $D=1$, se obtiene la potencia máxima que el convertidor puede transferir:
+y cuando $D=\frac{1}{2}$, se obtiene la potencia máxima que el convertidor puede transferir:
 
 \begin{equation}
     P_{o_{max}} = \frac{V_i V_o}{8 n L f_s}
 \end{equation}
 
+Este mismo análisis puede aplicarse si el DAB actúa como reductor. La diferencia es que la tensión en el secundario está adelantada respecto del primario.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{Imagenes/graf_dab_teo4.png}
-    \caption{Formas de onda teóricas en el DAB.}
+    \caption{Formas de onda teóricas del DAB en modo elevador, con modulación SPS en régimen.}
     \label{fig:graf_dab_teo}
 \end{figure}
 
