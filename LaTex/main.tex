@@ -146,13 +146,13 @@
 
 \section{Introducción}
 
-El crecimiento sostenido de las energías renovables y los sistemas de almacenamiento de energía ha impulsado la necesidad de desarrollar convertidores electrónicos de potencia cada vez más eficientes y versátiles. En este contexto, los convertidores DC-DC bidireccionales desempeñan un papel fundamental al permitir la transferencia controlada de energía entre diferentes fuentes y sistemas de almacenamiento, adaptándose a una amplia variedad de aplicaciones industriales, residenciales y de movilidad eléctrica.
+La creciente incorporación de fuentes de energía renovable, sistemas de almacenamiento basados en baterías y aplicaciones de movilidad eléctrica ha impulsado el desarrollo de nuevas soluciones para la conversión eficiente de energía eléctrica. En estos sistemas resulta frecuente la necesidad de intercambiar energía entre diferentes niveles de tensión continua, tanto para alimentar cargas como para almacenar o recuperar energía desde bancos de baterías.
 
-Entre las distintas topologías disponibles, el convertidor \textit{Dual Active Bridge} (DAB) ha adquirido una relevancia creciente debido a sus características de aislamiento galvánico mediante transformador de alta frecuencia, capacidad de transferencia bidireccional de potencia, amplio rango de adaptación de tensión y elevada densidad de potencia. Estas ventajas lo convierten en una solución ampliamente utilizada en sistemas de almacenamiento energético, cargadores bidireccionales para vehículos eléctricos y aplicaciones vinculadas a redes eléctricas inteligentes.
+Dentro de este contexto, los convertidores DC-DC bidireccionales han adquirido una importancia significativa debido a su capacidad para transferir energía en ambos sentidos, permitiendo implementar funciones de carga y descarga de sistemas de almacenamiento energético. Estas características los convierten en elementos fundamentales en aplicaciones tales como sistemas fotovoltaicos con almacenamiento, vehículos eléctricos, cargadores bidireccionales y microrredes eléctricas.
 
-La topología DAB está compuesta por dos puentes activos completos conectados mediante un transformador de alta frecuencia y una inductancia serie, permitiendo controlar tanto la magnitud como el sentido del flujo de potencia mediante técnicas de modulación por desfase. Gracias a esta característica, es posible operar el convertidor tanto en modo elevador como reductor de tensión, manteniendo el aislamiento eléctrico entre sus puertos de entrada y salida.
+Entre las distintas alternativas disponibles, la topología \textit{Dual Active Bridge} (DAB) se ha consolidado como una de las soluciones más utilizadas en aplicaciones de media y alta potencia debido a su elevado rendimiento, su capacidad de operación bidireccional y la posibilidad de implementar aislamiento galvánico entre los puertos de entrada y salida.
 
-En el presente trabajo se aborda el estudio, diseño y simulación de un convertidor DC-DC bidireccional basado en la topología DAB para una tensión de entrada de \SI{48}{V}, una tensión de salida de \SI{400}{V} y un rango de corriente de hasta \SI{40}{A}. Para ello se analizan los principios de funcionamiento de la topología, se seleccionan los componentes principales del sistema, se desarrolla el circuito de control y disparo de los dispositivos de potencia, y finalmente se verifican los resultados obtenidos mediante simulación comparándolos con los valores teóricos calculados.
+El presente trabajo tiene como finalidad realizar el diseño y análisis de un convertidor DC-DC bidireccional basado en la topología DAB, destinado a operar con una tensión de entrada de \SI{48}{V}, una tensión de salida de \SI{400}{V} y una corriente máxima de salida de \SI{40}{A}. Para ello se desarrollan los fundamentos teóricos necesarios, se realiza el dimensionamiento de los principales componentes del convertidor y se valida el diseño mediante simulaciones eléctricas, comparando los resultados obtenidos con los resultados teóricos esperados.
 
 \section{Objetivos}
 
@@ -182,7 +182,7 @@ Diseñar y simular un convertidor DC-DC bidireccional basado en la topología \t
 
 \section{Marco Teórico}
 
-El convertidor de \emph{doble puente activo} (DAB) tiene la topología de la figura \ref{fig:circuito}. Está compuesto por dos puentes H que pueden ser comúnmente de mosfets o IGBT, conformando una etapa inversora y otra rectificadora, y un transformador de alta frecuencia en medio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos.
+El convertidor DAB tiene la topología de la figura \ref{fig:circuito}. Está compuesto por dos puentes H que pueden ser comúnmente de mosfets o IGBT, conformando una etapa inversora y otra rectificadora, y un transformador de alta frecuencia en medio. Este circuito es utilizado para transferir potencia de un lado de baja tensión a otro de alta tensión y viceversa, mientras provee un aislamiento galvánico entre ellos. Cuando se entrega potencia al lado de alta tension, el DAB opera en modo \emph{elevador}, y cuando se entrega al lado de baja tension, opera en modo \emph{reductor}.
 
 \begin{figure}[H]
     \centering
@@ -195,7 +195,9 @@ Los dos puentes son controlados de tal forma que generen una onda cuadrada de te
 
 Los métodos utilizados para controlar la conmutación se denominan \emph{modulaciones} y existen varias en la práctica. La más sencilla es la modulación \emph{SPS} (Desplazamiento de Fase Único) y es la que se utilizó para realizar el diseño que se explica más adelante. 
 
-Las formas de onda que se producen con la modulación SPS se muestran en la figura \ref{fig:graf_dab_teo}. Los dos puentes conmutan con un duty cycle del 50\% pero desfasados un ángulo $\phi$, lo que genera una corriente sobre la inductancia que es posible calcular mediante la ley de Faraday-Lenz. La corriente promedio en la etapa de salida es
+Las formas de onda que se producen con la modulación SPS se muestran en la figura \ref{fig:graf_dab_teo}. Los dos puentes conmutan con un duty cycle del 50\% pero desfasados un ángulo $\phi$, lo que genera una corriente sobre la inductancia que es posible calcular mediante la ley de Faraday-Lenz. En modo elevador, el puente del secundario está atrasado respecto del puente primario, y en modo reductor está adelantado.
+
+Cuando el convertidor opera en modo elevador, en régimen, la corriente promedio en la etapa de salida es
 
 \begin{equation}
     I_o = \frac{V_i}{2 n L f_s}\, D(1-D) \qquad
@@ -205,7 +207,7 @@ Las formas de onda que se producen con la modulación SPS se muestran en la figu
 donde $n$ es la relación de transformación, $L$ es la inductancia serie, $f_s$ es la frecuencia de conmutación y $D$ es el duty cycle, que se define como
 
 \[
-    D = \frac{\phi}{\pi} \qquad
+    D = \frac{\phi}{2\pi} \qquad
     0 \leq \phi \leq \pi
 \]
 
@@ -216,16 +218,18 @@ A partir de esto, se obtiene la potencia transmitida como
 \end{equation}
 
 \noindent
-y cuando $D=1$, se obtiene la potencia máxima que el convertidor puede transferir:
+y cuando $D=\frac{1}{2}$, se obtiene la potencia máxima que el convertidor puede transferir:
 
 \begin{equation}
     P_{o_{max}} = \frac{V_i V_o}{8 n L f_s}
 \end{equation}
 
+Este mismo análisis puede aplicarse si el DAB actúa como reductor. La diferencia es que la tensión en el secundario está adelantada respecto del primario.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=\linewidth]{Imagenes/graf_dab_teo4.png}
-    \caption{Formas de onda teóricas en el DAB.}
+    \caption{Formas de onda teóricas del DAB en modo elevador, con modulación SPS en régimen.}
     \label{fig:graf_dab_teo}
 \end{figure}
 
