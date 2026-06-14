@@ -29,7 +29,7 @@
 \usepackage{graphicx}
 \usepackage{makecell}
 \usepackage{enumitem}
-\usepackage{svg}
+\usepackage{subcaption}
 % ----------------------------------------------
 
 % Estilos de página
@@ -441,12 +441,74 @@ Encapsulado & - & DIP-16 / SOIC-16 \\
 
 \section{Resultados en Simulación}
 
-%\begin{figure}
-%    \centering
-%    \includegraphics[width=1\linewidth]{Imagenes/circuito_sim.png}
-%    \caption{cap}
-%    \label{fig:circuito_sim}
-%\end{figure}
+\subsection{Simulación del Circuito de Potencia}
+
+La simulación del diseño con los mosfet seleccionados se realizó en Plecs, version 5.0.4. El circuito del módulo de potencia simulado se muestra en la figura \ref{fig:circuito_sim}, donde las señales de disparo se generaron según el duty cycle $D$.
+
+\begin{figure}[H]
+   \centering
+   \includegraphics[width=1\linewidth]{Imagenes/circuito_sim.png}
+   \caption{Esquema de un módulo DAB en la simulación.}
+   \label{fig:circuito_sim}
+\end{figure}
+
+Finalmente se simuló el comportamiento con los 4 módulos, con el esquema de la figura \ref{fig:circuito_mod_sim}. Las formas de onda obtenidas se encuentran en la figura \ref{fig:ondas_sim}. Se observa que la tension y corriente sobre el inductor tienen la forma esperada, con pequeñas pendientes en $v_L$, que corresponden al efecto de la ganancia entre $V_o/n$ y $V_i$ mencionada en el marco teórico. Los valores sobre la carga se mantienen constantes, llegando hasta 40\,A en el caso de máxima potencia (figura \ref{fig:graf_boost_mod_16kw}), lo que significa que con 4 módulos es posible cumplir con todas las especificaciones. También se corroboran los cálculos de los mosfet observando la corriente pico sobre el inductor (160\,A contra los 166\,A calculados).
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/circuito_mod_boost_sim.png}
+        \subcaption{Modo elevador.}
+        \label{fig:circuito_mod_boost_sim}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/circuito_mod_buck_sim.png}
+        \subcaption{Modo reductor.}
+        \label{fig:circuito_mod_buck_sim}
+    \end{minipage}
+
+    \caption{Esquema de módulos en paralelo en la simulación.}
+    \label{fig:circuito_mod_sim}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/graf_boost_mod_16kw}
+        \subcaption{DAB en modo elevador. $P_o=16$\,kW.}
+        \label{fig:graf_boost_mod_16kw}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/graf_buck_mod_16kw.png}
+        \subcaption{DAB en modo reductor. $P_o=16$\,kW.}
+        \label{fig:graf_buck_mod_16kw}
+    \end{minipage}
+
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/graf_boost_mod_12kw.png}
+        \subcaption{DAB en modo elevador. $P_o=12$\,kW.}
+        \label{fig:graf_boost_mod_12kw}
+    \end{minipage}
+    \hfill
+    \begin{minipage}{0.48\linewidth}
+        \centering
+        \includegraphics[width=1\linewidth]{Imagenes/graf_buck_mod_12kw.png}
+        \subcaption{DAB en modo reductor. $P_o=12$\,kW.}
+        \label{fig:graf_buck_mod_12kw}
+    \end{minipage}
+
+    \caption{Formas de onda obtenidas en la simulación de un módulo.}
+    \label{fig:ondas_sim}
+\end{figure}
 
 \section{Conclusión}
 
