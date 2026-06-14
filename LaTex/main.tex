@@ -191,6 +191,13 @@ El convertidor DAB tiene la topología de la figura \ref{fig:circuito}. Está co
     \label{fig:circuito}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\linewidth]{Imagenes/diag_dab.pdf}
+    \caption{Diagrama en bloques del DAB.}
+    \label{fig:diag_dab}
+\end{figure}
+
 Los dos puentes son controlados de tal forma que generen una onda cuadrada de tensión en ambos lados del transformador, pero el principio de funcionamiento se basa en el desfasaje entre las dos ondas y la inductancia de los devanados del transformador. Esta inductancia total tanto en el primario como en el secundario se modela como un inductor en serie ubicado en uno de los dos lados, y la caída de tensión sobre la misma es la diferencia entre las dos ondas cuadradas, resultando en una corriente que circula en ambos puentes y produce la transferencia de potencia. En la implementación se suele complementar con un inductor en serie físico para controlar la potencia máxima requerida.
 
 Los métodos utilizados para controlar la conmutación se denominan \emph{modulaciones} y existen varias en la práctica. La más sencilla es la modulación \emph{SPS} (Desplazamiento de Fase Único) y es la que se utilizó para realizar el diseño que se explica más adelante. 
