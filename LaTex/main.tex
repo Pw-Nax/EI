@@ -293,7 +293,7 @@ Este puente maneja corrientes elevadas, por lo que se requiere minimizar la resi
 \begin{itemize}
     \item \textbf{Criterio de Diseño:} Se aplica un factor de seguridad del 50\% para la tensión y del 30\% para la corriente nominal:
     \begin{equation}
-        V_{DSS\_req} \ge 48\text{ V} \cdot 1.5 = \SI{72}{\volt}, \quad I_{D\_req} \ge 90.01\text{ A} \cdot 1.3 = \SI{117.01}{\ampere}
+        V_{DSS\_req} \ge 48\text{ V} \cdot 2 = \SI{96}{\volt}, \quad I_{D\_req} \ge 90.01\text{ A} \cdot 1.3 = \SI{117.01}{\ampere}
     \end{equation}
     \item \textbf{Estrategia de Selección:} Dada la magnitud de la corriente (\SI{90.01}{\ampere} RMS), se implementan \textbf{2 MOSFETs en paralelo por rama}. Esto reduce la resistencia efectiva a la mitad y distribuye la carga térmica, permitiendo una disipación más eficiente.
     \item \textbf{Componente Seleccionado:} \textbf{Infineon IPP023N10N5} (100 V, 120 A). Presenta una $R_{DS(on)}$ ultra baja de \SI{2.3}{\milli\ohm}.
@@ -309,7 +309,7 @@ Para el puente secundario, las exigencias de corriente se ven reducidas por la r
 \begin{itemize}
     \item \textbf{Criterio de Diseño:} Con los mismos factores de seguridad, se requiere:
     \begin{equation}
-        V_{DSS\_req\_sec} \ge 400\text{ V} \cdot 1.5 = \SI{600}{\volt}, \quad I_{D\_req\_sec} \ge 10.80\text{ A} \cdot 1.3 = \SI{14.04}{\ampere}
+        V_{DSS\_req\_sec} \ge 400\text{ V} \cdot 2 = \SI{800}{\volt}, \quad I_{D\_req\_sec} \ge 10.80\text{ A} \cdot 1.3 = \SI{14.04}{\ampere}
     \end{equation}
     \item \textbf{Estrategia de Selección:} Se opta por tecnología de Carburo de Silicio (SiC) para permitir conmutaciones eficientes a 40\,kHz y eliminar problemas de recuperación inversa del diodo de cuerpo.
     \item \textbf{Componente Seleccionado:} \textbf{Wolfspeed C3M0060065D} (650 V, 36 A).
@@ -580,6 +580,21 @@ Finalmente se simuló el comportamiento con los 4 módulos, con el esquema de la
     \caption{Formas de onda obtenidas en la simulación de un módulo.}
     \label{fig:ondas_sim}
 \end{figure}
+
+
+
+\subsection{Simulación del Circuito de Control y Disparo}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Imagenes/Disparos_sg3525.png}
+    \caption{Esquema del circuito de disparo basado en el controlador SG3525.}
+    \label{fig:circuito_disparo_sim}
+\end{figure}
+
+En la Figura \ref{fig:circuito_disparo_sim} se ilustra la implementación del circuito de control. Debido a que cada integrado SG3525 dispone de un par de salidas PWM, se utilizaron dos controladores para gestionar la totalidad del convertidor DAB. El primer controlador genera las señales $S_{14}$ y $S_{23}$ destinadas al puente primario, mientras que el segundo genera $S_{58}$ y $S_{67}$ para el puente secundario. 
+
+Las formas de onda obtenidas, presentadas en la Figura \ref{fig:circuito_disparo_sim}, confirman que las señales de disparo operan a la frecuencia y ciclo de trabajo de diseño. Se verifica un desfasaje de $90^\circ$ entre las ramas de cada puente.
 
 \section{Conclusión}
 
