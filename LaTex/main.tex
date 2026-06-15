@@ -315,49 +315,49 @@ Para el puente secundario, las exigencias de corriente se ven reducidas por la r
     \item \textbf{Componente Seleccionado:} \textbf{Wolfspeed C3M0060065D} (650 V, 36 A).
 \end{itemize}
 
+\subsection{Comprobación de la Zona Segura de Operación}
 
-\subsection{Corriente en la inductancia de dispersión}
+Una vez seleccionados los dispositivos semiconductores para ambos puentes, se verifica que las condiciones de operación previstas se encuentren dentro de la zona segura de operación (\textit{Safe Operating Area}, SOA) especificada por los fabricantes. Esta verificación se realiza considerando las máximas tensiones drenador-surtidor y las corrientes pico que pueden presentarse durante el funcionamiento del convertidor.
 
-La corriente eficaz que circula por la inductancia de dispersión ($I_{L\_rms}$) es un parámetro fundamental para el cálculo de pérdidas en el cobre del transformador y para dimensionar el núcleo magnético. De acuerdo con la forma de onda trapezoidal característica del convertidor DAB, la integral de la corriente para un ciclo de trabajo $D=0.5$ se resuelve como:
+Para el puente primario, correspondiente al lado de baja tensión, se seleccionó el MOSFET Infineon IPP023N10N5. Debido a la utilización de dos dispositivos en paralelo por rama, la corriente pico calculada para cada MOSFET resulta:
 
-\begin{equation}
-    I_{L\_rms} = \sqrt{\frac{2}{3}} I_p
-\end{equation}
+\[
+I_{D,pico}=\frac{166.67}{2}=83.33;A
+\]
 
-Sustituyendo el valor de corriente de pico calculado para nuestro módulo ($I_p = \SI{166.67}{\ampere}$):
+mientras que la máxima tensión drenador-surtidor es:
 
-\begin{equation}
-    I_{L\_rms} = \sqrt{\frac{2}{3}} \cdot 166.67\text{ A} = 0.8165 \cdot 166.67\text{ A} = \SI{136.08}{\ampere}
-\end{equation}
+\[
+V_{DS}=48;V
+\]
 
-\subsubsection{Verificación de Corrientes en la Llave}
+La Figura \ref{fig:soa_primario} muestra la curva SOA proporcionada por el fabricante. Puede observarse que el punto de operación correspondiente se encuentra ampliamente contenido dentro de la región segura de funcionamiento, verificando que el dispositivo posee suficiente margen frente a las exigencias de corriente y tensión impuestas por la aplicación.
 
-Para validar la consistencia de los cálculos, se realiza la verificación basada en que la corriente total que atraviesa la inductancia es suministrada por las llaves del puente. En cada semiciclo, la corriente eficaz de una llave ($I_{llave\_rms}$) está compuesta por la contribución del MOSFET ($I_{MOS\_rms}$) y de su diodo en antiparalelo ($I_{F\_rms}$):
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{Imagenes/soa_primario.png}
+\caption{Verificación de la zona segura de operación del MOSFET IPP023N10N5.}
+\label{fig:soa_primario}
+\end{figure}
 
-\begin{equation}
-    I_{llave\_rms} = \sqrt{I_{MOS\_rms}^2 + I_{F\_rms}^2}
-\end{equation}
+Para el puente secundario, correspondiente al lado de alta tensión, se seleccionó el MOSFET de carburo de silicio Wolfspeed C3M0060065D. A partir de las condiciones de operación inicialmente calculadas, el punto de trabajo se ubicaba fuera de la región segura de operación indicada por la curva SOA del dispositivo. Con el objetivo de reducir el esfuerzo eléctrico sobre cada semiconductor, se adoptó la misma estrategia implementada en el puente primario, incorporando dos MOSFETs en paralelo por rama.
 
-Utilizando nuestros datos del puente primario:
-\begin{itemize}
-    \item $I_{MOS\_rms} = \SI{90.01}{\ampere}$
-    \item $I_{F\_rms} = \frac{I_p}{\sqrt{24}} = \frac{166.67}{\sqrt{24}} = \SI{34.02}{\ampere}$
-\end{itemize}
+Como consecuencia, la corriente pico por dispositivo se reduce a:
 
-Calculamos la corriente eficaz por llave:
-\begin{equation}
-    I_{llave\_rms} = \sqrt{(90.01\text{ A})^2 + (34.02\text{ A})^2} = \sqrt{8101.8 + 1157.4} = \SI{96.22}{\ampere}
-\end{equation}
+\[
+I_{D,pico}=10;A
+\]
 
-Dado que la inductancia de dispersión conduce la corriente de dos llaves simultáneamente (una por cada rama activa del puente) y lo hace durante ambos semiciclos, la relación teórica es $I_{L\_rms} = \sqrt{2} \cdot I_{llave\_rms}$. Realizamos la comprobación final:
+manteniéndose la tensión máxima drenador-surtidor dentro de los valores previstos de diseño. La Figura \ref{fig:soa_secundario} muestra la ubicación del nuevo punto de operación sobre la curva SOA del fabricante, verificándose que éste se encuentra dentro de la región permitida para el tiempo de pulso considerado.
 
-\begin{equation}
-    I_{L\_rms} = \sqrt{2} \cdot 96.22\text{ A} = \SI{136.08}{\ampere}
-\end{equation}
+Por lo tanto, puede concluirse que los dispositivos seleccionados operan dentro de sus límites seguros de tensión y corriente, garantizando un margen adecuado de confiabilidad para las condiciones nominales de funcionamiento del convertidor.
 
-\textbf{Conclusión:} Los resultados son idénticos, lo que verifica que la distribución de corriente entre los semiconductores (MOSFET y diodo) y la inductancia de dispersión es analíticamente correcta y consistente con el modelo de conducción del DAB.
-
-
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{Imagenes/soa_secundario.png}
+\caption{Verificación de la zona segura de operación del MOSFET C3M0060065D.}
+\label{fig:soa_secundario}
+\end{figure} 
 
 \subsection{Selección y Verificación de los Capacitores de Bus}
 
@@ -391,38 +391,6 @@ Para el bus de entrada, se permite un rizado ligeramente superior (objetivo del 
     \end{equation}
     \item \textbf{Conclusión:} El resultado de \SI{0.882}{\percent} cumple holgadamente con el requerimiento de diseño, situándose muy por debajo del \SI{2}{\percent} máximo permitido.
 \end{itemize}
-
-
-\subsubsection{Cálculo de la Potencia de Diseño del Transformador}
-
-En convertidores de alta frecuencia como el DAB, el transformador debe dimensionarse considerando la potencia aparente ($P_{calc}$), la cual es superior a la potencia de salida nominal debido a los altos valores de corriente eficaz ($RMS$) generados por la forma de onda trapezoidal. Esta potencia se define como el promedio de las potencias aparentes del primario y secundario:
-
-\begin{equation}
-    P_{calc} = \frac{P_{primario} + P_{secundario}}{2}
-\end{equation}
-
-Utilizando los valores de corriente eficaz calculados anteriormente para el régimen de máxima transferencia (\SI{4}{\kilo\watt}):
-
-\begin{itemize}
-    \item \textbf{Potencia aparente del primario:} Basada en el bus de entrada ($V_g = \SI{48}{\volt}$) y la corriente eficaz en la inductancia ($I_{L\_rms} = \SI{136.08}{\ampere}$).
-    \begin{equation}
-        P_{primario} = V_g \cdot I_{L\_rms} = 48\text{ V} \cdot 136.08\text{ A} = \SI{6531.84}{\watt}
-    \end{equation}
-    
-    \item \textbf{Potencia aparente del secundario:} Basada en el bus de salida ($V_o = \SI{400}{\volt}$) y la corriente eficaz referida al secundario ($I_{L\_rms\_sec} = I_{L\_rms}/n = \SI{16.33}{\ampere}$).
-    \begin{equation}
-        P_{secundario} = V_o \cdot I_{L\_rms\_sec} = 400\text{ V} \cdot 16.33\text{ A} = \SI{6532.00}{\watt}
-    \end{equation}
-\end{itemize}
-
-Sustituyendo en la fórmula de potencia de diseño:
-\begin{equation}
-    P_{calc} = \frac{\SI{6531.84}{\watt} + \SI{6532.00}{\watt}}{2} = \SI{6531.92}{\watt} \approx \SI{6.53}{\kilo\watt}
-\end{equation}
-
-\textbf{Nota de diseño:} Aunque la potencia útil entregada a la carga es de \SI{4}{\kilo\watt}, el transformador debe ser dimensionado magnética y térmicamente para soportar una potencia de cálculo de \SI{6.53}{\kilo\watt}. Esta diferencia se debe al factor de forma de la corriente en la topología DAB, donde la corriente eficaz es significativamente mayor a la corriente media.
-
-
 
 
 \subsection{Diseño del Controlador PWM - Driver}
