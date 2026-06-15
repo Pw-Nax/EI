@@ -315,7 +315,49 @@ Para el puente secundario, las exigencias de corriente se ven reducidas por la r
     \item \textbf{Componente Seleccionado:} \textbf{Wolfspeed C3M0060065D} (650 V, 36 A).
 \end{itemize}
 
+\subsection{Comprobación de la Zona Segura de Operación}
 
+Una vez seleccionados los dispositivos semiconductores para ambos puentes, se verifica que las condiciones de operación previstas se encuentren dentro de la zona segura de operación (\textit{Safe Operating Area}, SOA) especificada por los fabricantes. Esta verificación se realiza considerando las máximas tensiones drenador-surtidor y las corrientes pico que pueden presentarse durante el funcionamiento del convertidor.
+
+Para el puente primario, correspondiente al lado de baja tensión, se seleccionó el MOSFET Infineon IPP023N10N5. Debido a la utilización de dos dispositivos en paralelo por rama, la corriente pico calculada para cada MOSFET resulta:
+
+\[
+I_{D,pico}=\frac{166.67}{2}=83.33;A
+\]
+
+mientras que la máxima tensión drenador-surtidor es:
+
+\[
+V_{DS}=48;V
+\]
+
+La Figura \ref{fig:soa_primario} muestra la curva SOA proporcionada por el fabricante. Puede observarse que el punto de operación correspondiente se encuentra ampliamente contenido dentro de la región segura de funcionamiento, verificando que el dispositivo posee suficiente margen frente a las exigencias de corriente y tensión impuestas por la aplicación.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\linewidth]{Imagenes/soa_primario.png}
+\caption{Verificación de la zona segura de operación del MOSFET IPP023N10N5.}
+\label{fig:soa_primario}
+\end{figure}
+
+Para el puente secundario, correspondiente al lado de alta tensión, se seleccionó el MOSFET de carburo de silicio Wolfspeed C3M0060065D. A partir de las condiciones de operación inicialmente calculadas, el punto de trabajo se ubicaba fuera de la región segura de operación indicada por la curva SOA del dispositivo. Con el objetivo de reducir el esfuerzo eléctrico sobre cada semiconductor, se adoptó la misma estrategia implementada en el puente primario, incorporando dos MOSFETs en paralelo por rama.
+
+Como consecuencia, la corriente pico por dispositivo se reduce a:
+
+\[
+I_{D,pico}=10;A
+\]
+
+manteniéndose la tensión máxima drenador-surtidor dentro de los valores previstos de diseño. La Figura \ref{fig:soa_secundario} muestra la ubicación del nuevo punto de operación sobre la curva SOA del fabricante, verificándose que éste se encuentra dentro de la región permitida para el tiempo de pulso considerado.
+
+Por lo tanto, puede concluirse que los dispositivos seleccionados operan dentro de sus límites seguros de tensión y corriente, garantizando un margen adecuado de confiabilidad para las condiciones nominales de funcionamiento del convertidor.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\linewidth]{Imagenes/soa_secundario.png}
+\caption{Verificación de la zona segura de operación del MOSFET C3M0060065D.}
+\label{fig:soa_secundario}
+\end{figure} 
 
 \subsection{Selección y Verificación de los Capacitores de Bus}
 
@@ -349,9 +391,6 @@ Para el bus de entrada, se permite un rizado ligeramente superior (objetivo del 
     \end{equation}
     \item \textbf{Conclusión:} El resultado de \SI{0.882}{\percent} cumple holgadamente con el requerimiento de diseño, situándose muy por debajo del \SI{2}{\percent} máximo permitido.
 \end{itemize}
-
-
-
 
 
 \subsection{Diseño del Controlador PWM - Driver}
