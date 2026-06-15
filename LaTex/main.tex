@@ -570,7 +570,18 @@ En la Figura \ref{fig:circuito_disparo_sim} se ilustra la implementación del ci
 
 Las formas de onda obtenidas, presentadas en la Figura \ref{fig:circuito_disparo_sim}, confirman que las señales de disparo operan a la frecuencia y ciclo de trabajo de diseño. Se verifica un desfasaje de $90^\circ$ entre las ramas de cada puente.
 
-\section{Conclusión}
+\section{Conclusiones}
+
+\subsection{Conclusiones Técnicas}
+
+\begin{itemize}
+    \item El convertidor DAB fue diseñado a partir de 4 módulos de 4\,kW (10\,A) cada uno, lográndose así la implementación con MOSFET mas económicos.
+    \item La selección de los MOSFET estuvo condicionada por el compromiso entre la tensión de ruptura y la disipación de potencia máxima, ya que el uso de transistores de mayor tensión desplazaba el punto de trabajo fuera de la SOA. Esto se solucionó paralelizando los MOSFET.
+    \item La simulación del convertidor con los elementos seleccionados generó los resultados teóricos esperados de corriente máxima de 40\,A a la salida y de 160\,A en los mosfets.
+    \item La implementación de 8 controladores SG3525, configurados a 80\,kHz, permitieron controlar el disparo de todos los semiconductores con el desfasaje correspondiente.
+\end{itemize}
+
+\subsection{Conclusiones Personales}
 
 
 %\newpage
