@@ -491,7 +491,13 @@ La simulación del diseño con los mosfet seleccionados se realizó en Plecs, ve
    \label{fig:circuito_sim}
 \end{figure}
 
-Finalmente se simuló el comportamiento con los 4 módulos, con el esquema de la figura \ref{fig:circuito_mod_sim}. Las formas de onda obtenidas se encuentran en la figura \ref{fig:ondas_sim}. Se observa que la tension y corriente sobre el inductor tienen la forma esperada, con pequeñas pendientes en $v_L$, que corresponden al efecto de la ganancia entre $V_o/n$ y $V_i$ mencionada en el marco teórico. Los valores sobre la carga se mantienen constantes, llegando hasta 40\,A en el caso de máxima potencia (figura \ref{fig:graf_boost_mod_16kw}), lo que significa que con 4 módulos es posible cumplir con todas las especificaciones. También se corroboran los cálculos de los mosfet observando la corriente pico sobre el inductor (160\,A contra los 166\,A calculados).
+Finalmente, se simuló el comportamiento con los 4 módulos, con el esquema de la figura \ref{fig:circuito_mod_sim}. Las formas de onda obtenidas se encuentran en la figura \ref{fig:ondas_sim}. 
+
+Se observa que todas las tensiones y corrientes tienen la forma esperada. Sobre el inductor, la caída de tensión y la pendiente en la corriente es la misma para cualquier potencia; pero el desfasaje entre las dos tensiones es de la mitad para una $P_o$ de 12\,kW, lo que quiere decir que el control como tal no es lineal. Por otro lado, la corriente pico en el inductor es de 160\,A, manteniéndose por debajo de lo calculado (166\,A); como esta magnitud es la misma que la de los mosfet, se asegura que no superen el límite de operación.
+
+Los valores sobre la carga se mantienen constantes, llegando hasta 40\,A en el caso de máxima potencia (figura \ref{fig:graf_boost_mod_16kw}), lo que significa que con 4 módulos es posible cumplir con todas las especificaciones. 
+
+También se corroboran los cálculos de los mosfet observando la corriente pico sobre el inductor (160\,A contra los 166\,A calculados).
 
 \begin{figure}[H]
     \centering
